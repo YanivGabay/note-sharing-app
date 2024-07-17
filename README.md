@@ -28,6 +28,11 @@ get started
 
 ![alt text](image-8.png)
 
+https://stackoverflow.com/questions/66702421/firebase-code-400-message-configuration-not-found
+https://create-react-app.dev/docs/adding-custom-environment-variables/
+
+https://firebase.google.com/docs/firestore/quickstart
+
 
 ## Available Scripts
 
