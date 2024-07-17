@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { auth } from '../firebase-config';
-import { useNavigate } from 'react-router-dom';
 
+import { useNavigate } from 'react-router-dom';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -10,10 +10,15 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await auth.createUserWithEmailAndPassword(email, password);
-      navigate('/');
+      const auth = getAuth();
+      await createUserWithEmailAndPassword(auth,email, password);
+      navigate('/status', {
+        state: { status: 'Success', message: 'You have registered successfully!' }
+      });
     } catch (error) {
-      console.error("Error registering:", error);
+      navigate('/status', {
+        state: { status: 'Error', message: error.message }
+      });
     }
   };
 
@@ -21,20 +26,14 @@ const Register = () => {
     <div>
       <h1>Register</h1>
       <form onSubmit={handleRegister}>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Create a password"
-        />
+        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email" />
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Create a password" />
         <button type="submit">Register</button>
       </form>
+      <div>
+        <p>Already have an account? <a href="/login">Login</a></p>
+        <button onClick={() => navigate('/login')}>Login</button>
+      </div>
     </div>
   );
 };

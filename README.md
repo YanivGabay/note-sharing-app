@@ -2,6 +2,26 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+
+important screenshots TEMPORARY:
+
+
+![PRESS AUTHENITCATION](image.png)
+
+![PRESS GET STARTED](image-1.png)
+
+![PRESS EMAIL/PASSWORD](image-2.png)
+
+![CLICK ENABLE ON THE EMAIL/PASSWORD BOOL ](image-3.png)
+
+and save
+
+![alt text](image-4.png) 
+CHECK THE API
+
+
+
+
 ## Available Scripts
 
 In the project directory, you can run:
