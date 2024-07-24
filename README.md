@@ -34,6 +34,16 @@ https://create-react-app.dev/docs/adding-custom-environment-variables/
 https://firebase.google.com/docs/firestore/quickstart
 
 
+at this step we can add bootstrap to make the app look better
+https://getbootstrap.com/
+
+
+adding bootstrap to the main navbar depend on user login status
+![alt text](image-9.png)
+
+
+
+
 ## Available Scripts
 
 In the project directory, you can run:

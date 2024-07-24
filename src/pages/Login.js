@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import PageHeader from '../components/PageHeader';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -24,13 +25,33 @@ const Login = () => {
   };
 
   return (
+    <div
+      class="container-md"
+    >
+
     <div>
-      <h1>Login</h1>
+      <PageHeader pageHeader="Login" />
       <form onSubmit={handleLogin}>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-        <button type="submit">Login</button>
+
+        <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label text-left">Email address</label>
+        <input type="email" class="form-control" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="example@jmail.com" />
+        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+
+        <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label text-left">Password</label>
+        <input type="password" class="form-control" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+        </div>
+
+        <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+
       </form>
+    </div>
+
+
     </div>
   );
 };
