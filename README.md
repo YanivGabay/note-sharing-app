@@ -41,7 +41,8 @@ https://getbootstrap.com/
 adding bootstrap to the main navbar depend on user login status
 ![alt text](image-9.png)
 
-
+modify the input of notes to be a text area
+![alt text](image-10.png)
 
 
 ## Available Scripts

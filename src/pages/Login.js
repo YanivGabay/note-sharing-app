@@ -26,26 +26,26 @@ const Login = () => {
 
   return (
     <div
-      class="container-md"
+      className="container-md"
     >
 
     <div>
       <PageHeader pageHeader="Login" />
       <form onSubmit={handleLogin}>
 
-        <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label text-left">Email address</label>
-        <input type="email" class="form-control" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="example@jmail.com" />
-        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        <div className="mb-3">
+        <label  className="form-label text-left">Email address</label>
+        <input type="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="example@jmail.com" />
+        <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
         </div>
 
-        <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label text-left">Password</label>
-        <input type="password" class="form-control" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+        <div className="mb-3">
+        <label  className="form-label text-left">Password</label>
+        <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
         </div>
 
-        <div class="mb-3">
-        <button type="submit" class="btn btn-primary">Login</button>
+        <div className="mb-3">
+        <button type="submit" className="btn btn-primary">Login</button>
         </div>
 
       </form>

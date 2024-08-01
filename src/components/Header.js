@@ -24,16 +24,16 @@ const Header = () => {
 
 
     return (
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
+        <nav className="navbar navbar-expand-lg bg-body-tertiary">
+            <div className="container-fluid">
 
-                <a class="navbar-brand" href="/">Home</a>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <a className="navbar-brand" href="/">Home</a>
+                <div className="collapse navbar-collapse" id="navbarSupportedContent">
 
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                       
-                        <li class="nav-item">
-                           {isUserLoggedIn ? <Link class="nav-link" to="login" onClick={handleLogout}>Logout</Link> : <Link class="nav-link" to="login">Login</Link>}
+                        <li className="nav-item">
+                           {isUserLoggedIn ? <Link className="nav-link" to="login" onClick={handleLogout}>Logout</Link> : <Link className="nav-link" to="login">Login</Link>}
                         </li>
 
 

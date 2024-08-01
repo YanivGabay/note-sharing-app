@@ -26,7 +26,7 @@ const Register = () => {
   };
 
   return (
-    <div class="container-md" >
+    <div className="container-md" >
 
 
       <PageHeader pageHeader="Register" />
@@ -34,19 +34,20 @@ const Register = () => {
 
       <form onSubmit={handleRegister}>
 
-       <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label text-left">Email address</label>
-        <input type="email" class="form-control" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email" />
-        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+       <div className="mb-3">
+        <label  className="form-label text-left">Email address</label>
+        <input type="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email" />
+        <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
         </div>
 
-        <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label text-left">Password</label>
-        <input type="password" class="form-control" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Create a password" />
+        <div className="mb-3">
+        <label  className="form-label text-left">Password</label>
+        <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Create a password" />
         </div>
 
 
-        <button type="submit">Register</button>
+        <button type="submit" className="btn btn-primary">Register</button>
+        
 
 
       </form>
@@ -54,7 +55,7 @@ const Register = () => {
 
       <div>
         <p>Already have an account? <a href="/login">Login</a></p>
-        <button onClick={() => navigate('/login')}>Login</button>
+        <button className="btn btn-primary" onClick={() => navigate('/login')}>Login</button>
       </div>
     </div>
   );
