@@ -55,10 +55,17 @@ const Home = () => {
 
   return (
     <div className="container my-4">
-      <NoteForm {...{ newNote, setNewNote, newCategory, setNewCategory, handleAddNote }} />
-      <CategoryFilter categories={categories} setCategory={setCategory} />
-     
+      <h1 className="text-center my-4">Collaborative Notes</h1>
+      <hr className="mt-2 mb-3"/>
 
+      <h2 className="text-center my-4">Add a new note</h2>
+      <NoteForm {...{ newNote, setNewNote, newCategory, setNewCategory, handleAddNote }} />
+      <hr className="mt-2 mb-3"/>
+      <CategoryFilter categories={categories} setCategory={setCategory} />
+      <hr className="mt-2 mb-3"/>
+
+     
+      <h2 className="text-center my-4">Notes</h2>
       <NoteList notes={notes} categories={categories} 
       updateNote={updateNote} handleDeleteNote={deleteNote} 
       category={category} startEditing={startEditing} cancelEditing={cancelEditing}

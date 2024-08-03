@@ -3,7 +3,7 @@ import React from 'react';
 
 const CategoryFilter = ({ categories, setCategory }) => {
   return (
-    <div className="my-3">
+    <div className="my-3 text-center">
       <h2>Categories</h2>
       {categories.map(category => (
         <button key={category} className="btn btn-outline-primary mx-2" onClick={() => setCategory(category)}>

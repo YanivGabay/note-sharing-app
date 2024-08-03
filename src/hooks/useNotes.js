@@ -35,17 +35,52 @@ const useNotes = (currentUser)=> {
     const historyRef = collection(noteRef, "history");
     const historySnapshot = await getDocs(historyRef);
     return historySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
+       ...doc.data(),
       createdAt: doc.data().createdAt.toDate(),
       updatedAt: doc.data().updatedAt.toDate()
     }));
   };
-  
-  const revertToVersion = async (noteId, versionData) => {
+
+  const revertToVersion = async (noteId, historyEntry) => {
+    console.log("Reverting to version:", historyEntry);
+    console.log("Note ID:", noteId);
     const noteRef = doc(firestore, "Notes", noteId);
-    await updateDoc(noteRef, versionData);
-  };
+
+    try {
+        const currentNoteSnapshot = await getDoc(noteRef);
+
+        if (currentNoteSnapshot.exists()) {
+            const historyRef = collection(noteRef, "history");
+            await addDoc(historyRef, {
+                ...currentNoteSnapshot.data(),
+                updatedAt: currentNoteSnapshot.data().updatedAt,
+                savedAt: new Date(),
+            });
+
+            const revertedData = {
+                ...historyEntry,
+                editedBy: currentUser?.email || "Anonymous",
+                updatedAt: new Date(),
+                isEditing: false
+            };
+
+            await updateDoc(noteRef, revertedData);
+
+            console.log("Note reverted successfully to:", revertedData);
+            return true; // Indicates successful revert
+        } else {
+            console.error("Document does not exist!");
+            return false; // Indicates failure to find the document
+        }
+    } catch (error) {
+        console.error("Failed to revert version:", error);
+        throw error;
+    }
+};
+
+
+
+
   
 
   const deleteNote = async (id) => {
@@ -61,6 +96,7 @@ const useNotes = (currentUser)=> {
         const historyRef = collection(noteRef, "history");
         await addDoc(historyRef, {
             ...noteSnapshot.data(),
+            updatedAt: noteSnapshot.data().updatedAt,
             savedAt: new Date(), // timestamp of when this history entry is saved
         });
 

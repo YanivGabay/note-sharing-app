@@ -14,7 +14,8 @@ const NoteList = ({ notes, categories, startEditing, cancelEditing, updateNote, 
             setNoteHistory([]);
         } else {
             const history = await fetchNoteHistory(noteId);
-            setNoteHistory(history);
+            const sortedHistory = history.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+            setNoteHistory(sortedHistory);
             setShowHistory(noteId);
         }
     };
@@ -39,6 +40,7 @@ const NoteList = ({ notes, categories, startEditing, cancelEditing, updateNote, 
             updateNote(id, { content: editContent, category: editCategory });
             cancelEditing(id);
             setEditingId(null); // Reset the editing ID
+            setShowHistory(null); // Hide history after saving edit
         }
     };
 
@@ -47,6 +49,21 @@ const NoteList = ({ notes, categories, startEditing, cancelEditing, updateNote, 
         setEditingId(null); // Reset the editing ID
     };
 
+
+    const handleRevert = async (noteId, historyEntry) => {
+        const success = await revertToVersion(noteId, historyEntry);
+        if (success) {
+            console.log("Revert was successful, updating UI accordingly.");
+            const updatedHistory = await fetchNoteHistory(noteId);
+            setNoteHistory(updatedHistory);
+            setShowHistory(noteId); // Keep showing history after a successful revert
+        } else {
+            console.error("Revert failed, unable to fetch updated history.");
+        }
+    };
+    
+    
+   
     const toggleSortOrder = () => {
         setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
     };
@@ -58,11 +75,11 @@ const NoteList = ({ notes, categories, startEditing, cancelEditing, updateNote, 
             return new Date(b.createdAt) - new Date(a.createdAt);
         }
     });
-
+    
     return (
         <div>
             <button className="btn btn-outline-secondary mb-3" onClick={toggleSortOrder}>
-                Sort by Date Created ({sortOrder === 'asc' ? 'Ascending' : 'Descending'})
+                Sort Notes by Date Created ({sortOrder === 'asc' ? 'Ascending' : 'Descending'})
             </button>
             {sortedNotes.map(note => (
                 (category === 'All' || note.category === category) && <div key={note.id} className="border rounded p-3 my-3">
@@ -102,18 +119,18 @@ const NoteList = ({ notes, categories, startEditing, cancelEditing, updateNote, 
                                             <div className="accordion-item" key={index}>
                                                 <h2 className="accordion-header" id={`heading${index}`}>
                                                     <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${index}`} aria-expanded="true" aria-controls={`collapse${index}`}>
-                                                        History Entry {index + 1} - {new Date(history.createdAt).toLocaleString()}
+                                                        History Entry {index + 1} - {new Date(history.updatedAt).toLocaleString()}
                                                     </button>
                                                 </h2>
                                                 <div id={`collapse${index}`} className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                                                     <div className="accordion-body">
                                                         <div key={index} className="history-entry">
                                                             <p>Last Updated: {new Date(history.updatedAt).toLocaleString()}</p>
-                                                            <p>Created At: {new Date(history.createdAt).toLocaleString()}</p>
+                                                            
                                                             <p>Content: {history.content}</p>
                                                             <p>Edited By: {history.editedBy}</p>
                                                             <p>Category: {history.category}</p>
-                                                            {/* Implement the revert functionality if required */}
+                                                            <button className="btn btn-warning" onClick={() => handleRevert(note.id, history)}>Revert to this version</button>
                                                         </div>
                                                     </div>
                                                 </div>
