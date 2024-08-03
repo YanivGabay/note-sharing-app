@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNotification } from '../NotificationContext';
 
 const NoteList = ({ notes, categories, startEditing, cancelEditing, updateNote, handleDeleteNote, category, fetchNoteHistory, revertToVersion }) => {
     const [editContent, setEditContent] = useState('');
@@ -7,6 +8,7 @@ const NoteList = ({ notes, categories, startEditing, cancelEditing, updateNote, 
     const [sortOrder, setSortOrder] = useState('desc');
     const [showHistory, setShowHistory] = useState(null);
     const [noteHistory, setNoteHistory] = useState([]);
+    const { notify } = useNotification(); // Destructure to directly get the notify function
 
     const toggleHistory = async (noteId) => {
         if (showHistory === noteId) {
@@ -41,7 +43,9 @@ const NoteList = ({ notes, categories, startEditing, cancelEditing, updateNote, 
             cancelEditing(id);
             setEditingId(null); // Reset the editing ID
             setShowHistory(null); // Hide history after saving edit
+            notify({ message: 'Note updated successfully.', type: 'success' });
         }
+
     };
 
     const handleCancelEdit = (id) => {
@@ -49,6 +53,17 @@ const NoteList = ({ notes, categories, startEditing, cancelEditing, updateNote, 
         setEditingId(null); // Reset the editing ID
     };
 
+    const handleStartDelete = (note) => {
+        if (editingId && editingId !== note.id) {
+            // If already editing another note, cancel that edit first
+            cancelEditing(editingId);
+        }
+        if (!note.isEditing) {
+            handleDeleteNote(note.id);
+            notify({ message: 'Note deleted successfully.', type: 'success' });
+
+        }
+    };
 
     const handleRevert = async (noteId, historyEntry) => {
         const success = await revertToVersion(noteId, historyEntry);
@@ -57,8 +72,10 @@ const NoteList = ({ notes, categories, startEditing, cancelEditing, updateNote, 
             const updatedHistory = await fetchNoteHistory(noteId);
             setNoteHistory(updatedHistory);
             setShowHistory(noteId); // Keep showing history after a successful revert
+            notify({ message: 'Note reverted successfully.', type: 'success' });
         } else {
             console.error("Revert failed, unable to fetch updated history.");
+            notify({ message: 'Failed to revert note.', type: 'error' });
         }
     };
     
@@ -108,7 +125,7 @@ const NoteList = ({ notes, categories, startEditing, cancelEditing, updateNote, 
                             <p>Created At: {note.createdAt.toLocaleString()}</p>
                             <p>Last Updated: {note.updatedAt.toLocaleString()}</p>
                             <button className="btn btn-info" onClick={() => handleStartEditing(note)}>Edit</button>
-                            <button className="btn btn-warning" onClick={() => handleDeleteNote(note.id)}>Delete</button>
+                            <button className="btn btn-warning" onClick={() => handleStartDelete(note)}>Delete</button>
                             <button type="button" className="btn btn-primary" onClick={() => toggleHistory(note.id)}>
                                 {showHistory === note.id ? 'Hide History' : 'Show History'}
                             </button>
