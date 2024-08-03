@@ -1,55 +1,5 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-
-important screenshots TEMPORARY:
-
-
-![PRESS AUTHENITCATION](image.png)
-
-![PRESS GET STARTED](image-1.png)
-
-![PRESS EMAIL/PASSWORD](image-2.png)
-
-![CLICK ENABLE ON THE EMAIL/PASSWORD BOOL ](image-3.png)
-
-and save
-
-![alt text](image-4.png) 
-CHECK THE API
-
-#database
-![alt text](image-5.png)
-
-![alt text](image-6.png)
-get started
-![alt text](image-7.png)
-
-![alt text](image-8.png)
-
-https://stackoverflow.com/questions/66702421/firebase-code-400-message-configuration-not-found
-https://create-react-app.dev/docs/adding-custom-environment-variables/
-
-https://firebase.google.com/docs/firestore/quickstart
-
-
-at this step we can add bootstrap to make the app look better
-https://getbootstrap.com/
-
-
-adding bootstrap to the main navbar depend on user login status
-![alt text](image-9.png)
-
-modify the input of notes to be a text area
-![alt text](image-10.png)
-
-
-add history to each note after its beign updated
-![alt text](image-11.png)
-
-get the history only and revert 
-![alt text](image-12.png)
 
 
 
