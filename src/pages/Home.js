@@ -6,16 +6,29 @@ import CategoryFilter from '../components/CategoryFilter';
 import ToastNotification from '../components/ToastNotification';
 import useNotes from '../hooks/useNotes';
 import { useAuth } from '../AuthContext';
+import { useEffect } from 'react';
 
 const Home = () => {
   const { currentUser } = useAuth();
-  const { notes, categories, addNote, deleteNote, updateNote, startEditing, cancelEditing } = useNotes(currentUser);
+  const { notes, categories, addNote, deleteNote, updateNote, startEditing, cancelEditing,fetchNoteHistory,revertToVersion  } = useNotes(currentUser);
 
   const [newNote, setNewNote] = useState('');
   const [newCategory, setNewCategory] = useState('General');
   const [category, setCategory] = useState('All');
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+
+  useEffect(() => {
+
+    if (!currentUser) {
+      setToastMessage("You need to be logged in to access the notes.");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+    }
+
+  }
+  , [currentUser]);
+
 
   const handleAddNote = async () => {
     if (!newNote.trim()) {
@@ -46,7 +59,10 @@ const Home = () => {
       <CategoryFilter categories={categories} setCategory={setCategory} />
      
 
-      <NoteList notes={notes} categories={categories} updateNote={updateNote} handleDeleteNote={deleteNote} category={category} startEditing={startEditing} cancelEditing={cancelEditing} />
+      <NoteList notes={notes} categories={categories} 
+      updateNote={updateNote} handleDeleteNote={deleteNote} 
+      category={category} startEditing={startEditing} cancelEditing={cancelEditing}
+      fetchNoteHistory={fetchNoteHistory} revertToVersion={revertToVersion} />
       <ToastNotification showToast={showToast} setShowToast={setShowToast} toastMessage={toastMessage} />
     </div>
   );

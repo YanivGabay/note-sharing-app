@@ -1,6 +1,6 @@
 // src/hooks/useNotes.js
 import { useState, useEffect } from 'react';
-import { collection, getDocs, addDoc, deleteDoc, doc, updateDoc, onSnapshot } from 'firebase/firestore';
+import { collection, getDoc, addDoc, deleteDoc, doc, updateDoc, onSnapshot ,getDocs} from 'firebase/firestore';
 import { firestore } from '../firebase-config';
 
 const useNotes = (currentUser)=> {
@@ -30,19 +30,53 @@ const useNotes = (currentUser)=> {
     });
   };
 
+  const fetchNoteHistory = async (noteId) => {
+    const noteRef = doc(firestore, "Notes", noteId);
+    const historyRef = collection(noteRef, "history");
+    const historySnapshot = await getDocs(historyRef);
+    return historySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+      createdAt: doc.data().createdAt.toDate(),
+      updatedAt: doc.data().updatedAt.toDate()
+    }));
+  };
+  
+  const revertToVersion = async (noteId, versionData) => {
+    const noteRef = doc(firestore, "Notes", noteId);
+    await updateDoc(noteRef, versionData);
+  };
+  
+
   const deleteNote = async (id) => {
     await deleteDoc(doc(firestore, "Notes", id));
   };
 
   const updateNote = async (id, data) => {
-    const updatedData = {
-      ...data,
-      editedBy: currentUser?.email || "Anonymous",
-      updatedAt: new Date(),
-      isEditing: false  // Ensure to set isEditing to false when update is done
-    };
-    await updateDoc(doc(firestore, "Notes", id), updatedData);
-  };
+    const noteRef = doc(firestore, "Notes", id);
+    const noteSnapshot = await getDoc(noteRef);
+
+    if (noteSnapshot.exists()) {
+        // Save the current state to the history sub-collection before updating
+        const historyRef = collection(noteRef, "history");
+        await addDoc(historyRef, {
+            ...noteSnapshot.data(),
+            savedAt: new Date(), // timestamp of when this history entry is saved
+        });
+
+        // Update the note with new data
+        const updatedData = {
+            ...data,
+            editedBy: currentUser?.email || "Anonymous",
+            updatedAt: new Date(),
+            isEditing: false  // Ensure to set isEditing to false when update is done
+        };
+        await updateDoc(noteRef, updatedData);
+    } else {
+        console.error("Document does not exist!");
+    }
+};
+
 
   const startEditing = async (id) => {
     await updateDoc(doc(firestore, "Notes", id), { isEditing: true });
@@ -52,7 +86,7 @@ const useNotes = (currentUser)=> {
     await updateDoc(doc(firestore, "Notes", id), { isEditing: false });
   };
 
-  return { notes, categories, addNote, deleteNote, updateNote, startEditing, cancelEditing };
+  return { notes, categories, addNote, deleteNote, updateNote, startEditing, cancelEditing, fetchNoteHistory, revertToVersion };
 };
 
 export default useNotes;

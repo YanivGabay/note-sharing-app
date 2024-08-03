@@ -1,10 +1,23 @@
 import React, { useState } from 'react';
 
-const NoteList = ({ notes, categories, startEditing, cancelEditing, updateNote, handleDeleteNote, category }) => {
+const NoteList = ({ notes, categories, startEditing, cancelEditing, updateNote, handleDeleteNote, category, fetchNoteHistory, revertToVersion }) => {
     const [editContent, setEditContent] = useState('');
     const [editCategory, setEditCategory] = useState('');
     const [editingId, setEditingId] = useState(null); // State to track the ID of the note being edited
     const [sortOrder, setSortOrder] = useState('desc');
+    const [showHistory, setShowHistory] = useState(null);
+    const [noteHistory, setNoteHistory] = useState([]);
+
+    const toggleHistory = async (noteId) => {
+        if (showHistory === noteId) {
+            setShowHistory(null);
+            setNoteHistory([]);
+        } else {
+            const history = await fetchNoteHistory(noteId);
+            setNoteHistory(history);
+            setShowHistory(noteId);
+        }
+    };
 
     const handleStartEditing = (note) => {
         if (editingId && editingId !== note.id) {
@@ -79,6 +92,43 @@ const NoteList = ({ notes, categories, startEditing, cancelEditing, updateNote, 
                             <p>Last Updated: {note.updatedAt.toLocaleString()}</p>
                             <button className="btn btn-info" onClick={() => handleStartEditing(note)}>Edit</button>
                             <button className="btn btn-warning" onClick={() => handleDeleteNote(note.id)}>Delete</button>
+                            <button type="button" className="btn btn-primary" onClick={() => toggleHistory(note.id)}>
+                                {showHistory === note.id ? 'Hide History' : 'Show History'}
+                            </button>
+
+                                <div className="accordion" id="accordionExample">
+                                    {showHistory === note.id && noteHistory.length > 0 ? (
+                                        noteHistory.map((history, index) => (
+                                            <div className="accordion-item" key={index}>
+                                                <h2 className="accordion-header" id={`heading${index}`}>
+                                                    <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${index}`} aria-expanded="true" aria-controls={`collapse${index}`}>
+                                                        History Entry {index + 1} - {new Date(history.createdAt).toLocaleString()}
+                                                    </button>
+                                                </h2>
+                                                <div id={`collapse${index}`} className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                                                    <div className="accordion-body">
+                                                        <div key={index} className="history-entry">
+                                                            <p>Last Updated: {new Date(history.updatedAt).toLocaleString()}</p>
+                                                            <p>Created At: {new Date(history.createdAt).toLocaleString()}</p>
+                                                            <p>Content: {history.content}</p>
+                                                            <p>Edited By: {history.editedBy}</p>
+                                                            <p>Category: {history.category}</p>
+                                                            {/* Implement the revert functionality if required */}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))
+                                    ) : (noteHistory.length === 0 && showHistory === note.id) && (
+                                        <div className="alert alert-warning" role="alert">
+                                            No history found for this note.
+                                        </div>
+                                    
+                                     
+                                    
+                                   
+                                    )}
+                                </div>
                         </>
                     )}
                 </div>

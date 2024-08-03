@@ -45,6 +45,14 @@ modify the input of notes to be a text area
 ![alt text](image-10.png)
 
 
+add history to each note after its beign updated
+![alt text](image-11.png)
+
+get the history only and revert 
+![alt text](image-12.png)
+
+
+
 ## Available Scripts
 
 In the project directory, you can run:
