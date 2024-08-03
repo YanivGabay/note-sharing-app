@@ -18,17 +18,6 @@ const Home = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
-  useEffect(() => {
-
-    if (!currentUser) {
-      setToastMessage("You need to be logged in to access the notes.");
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000);
-    }
-
-  }
-  , [currentUser]);
-
 
   const handleAddNote = async () => {
     if (!newNote.trim()) {

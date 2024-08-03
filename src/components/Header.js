@@ -4,19 +4,23 @@ import { getAuth, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
+import { useAuth } from '../AuthContext';
 
 const Header = () => {
 
     const navigate = useNavigate();
     const auth = getAuth();
-    const user = auth.currentUser;
-    const isUserLoggedIn = user !== null;
+
+
+    const { currentUser } = useAuth();
+    const isUserLoggedIn = !!currentUser;
 
     const handleLogout = async () => {
 
         try {
             await signOut(auth);
             navigate('/login');
+            
         } catch (error) {
             console.error('Logout failed:', error);
         }
