@@ -7,21 +7,25 @@ import { AuthProvider } from './AuthContext';
 import ProtectedRoute from './ProtectedRoute';
 import StatusPage from './pages/StatusPage';
 import Header from './components/Header';
+import { NotificationProvider } from './NotificationContext';
+import ToastNotification from './components/ToastNotification';
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-          <Route path="/login" element={<Login />} />
-          <Route path ="/status" element={<StatusPage />} />
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      </Router>
+      <NotificationProvider>
+        <Router>
+        <ToastNotification />
+          <Header />
+          <Routes>
+            <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/status" element={<StatusPage />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </Router>
+      </NotificationProvider>
     </AuthProvider>
   );
 }
-
 export default App;

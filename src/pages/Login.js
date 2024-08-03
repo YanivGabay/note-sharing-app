@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import PageHeader from '../components/PageHeader';
-import ToastNotification from '../components/ToastNotification';
+
 
 
 
@@ -11,8 +11,8 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
+
+
 
 
   const handleLogin = async (e) => {
@@ -20,8 +20,7 @@ const Login = () => {
     try {
       const auth = getAuth();
       await signInWithEmailAndPassword(auth ,email, password);
-      setToastMessage('You have logged in successfully!');
-      setShowToast(true);
+     
       navigate('/status', {
         state: { status: 'Success', message: 'You have logged in successfully!' }
 
@@ -61,7 +60,7 @@ const Login = () => {
 
       </form>
     </div>
-    <ToastNotification showToast={showToast} setShowToast={setShowToast} toastMessage={toastMessage} />
+   
 
     </div>
   );

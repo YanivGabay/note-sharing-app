@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import NoteList from '../components/NoteList';
 import NoteForm from '../components/NoteForm';
 import CategoryFilter from '../components/CategoryFilter';
-import ToastNotification from '../components/ToastNotification';
+
 import useNotes from '../hooks/useNotes';
 import { useAuth } from '../AuthContext';
-import { useEffect } from 'react';
+import { useNotification } from '../NotificationContext';
 
 const Home = () => {
   const { currentUser } = useAuth();
@@ -15,15 +15,16 @@ const Home = () => {
   const [newNote, setNewNote] = useState('');
   const [newCategory, setNewCategory] = useState('General');
   const [category, setCategory] = useState('All');
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
+  const { notify } = useNotification(); // Destructure to directly get the notify function
+
+  const handleAction = () => {
+    notify({ message: 'Action successful!', type: 'success' }); // Use notify to trigger a notification
+  };
 
 
   const handleAddNote = async () => {
     if (!newNote.trim()) {
-      setToastMessage("Note content cannot be empty.");
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000);
+      notify({ message: 'Note content cannot be empty.', type: 'error' });
       return;
     }
     await addNote({
@@ -35,9 +36,7 @@ const Home = () => {
       editedBy: currentUser ? currentUser.email : "Anonymous",
       isEditing: false
     });
-    setToastMessage("Note added successfully.");
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 3000);
+    handleAction();
     setNewNote('');
     setNewCategory('General');
   };
@@ -59,7 +58,7 @@ const Home = () => {
       updateNote={updateNote} handleDeleteNote={deleteNote} 
       category={category} startEditing={startEditing} cancelEditing={cancelEditing}
       fetchNoteHistory={fetchNoteHistory} revertToVersion={revertToVersion} />
-      <ToastNotification showToast={showToast} setShowToast={setShowToast} toastMessage={toastMessage} />
+   
     </div>
   );
 };
