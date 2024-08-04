@@ -25,3 +25,5 @@ yarn-debug.log*
 yarn-error.log*
 # .gitignore
 .env
+note-sharing-app-guide.png
+note-sharing-app-guide.pdf
