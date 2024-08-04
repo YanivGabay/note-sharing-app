@@ -3,7 +3,13 @@
 ## Overview
 
 The Collaborative Notes Application is designed to allow users to create, edit, and manage notes within a secure and dynamic environment. Built with React, Firebase, and Bootstrap, this project not only provides essential functionality for note management but also incorporates authentication and real-time database interactions.
+More than welcome to check the showcase in the youtube link:
+[Collaborative Notes Showcase Video](https://youtu.be/fppggEKl9X4)
+
+
 ![image](https://github.com/user-attachments/assets/0ae5afcd-e88f-40b7-9be1-013f7ef3e8fc)
+
+
 
 ## Features
 
