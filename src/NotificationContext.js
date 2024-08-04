@@ -19,8 +19,12 @@ export const NotificationProvider = ({ children }) => {
     }, 3000);
   };
 
+  const closeNotify = () => {
+    setNotification(prev => ({ ...prev, show: false }));
+  };
+
   return (
-    <NotificationContext.Provider value={{ notification, notify }}>
+    <NotificationContext.Provider value={{ notification, notify,closeNotify }}>
       {children}
     </NotificationContext.Provider>
   );
