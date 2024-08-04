@@ -44,6 +44,8 @@ const Home = () => {
   return (
     <div className="container my-4">
       <h1 className="text-center my-4">Collaborative Notes</h1>
+
+      <h2 className="text-center my-4">Welcome, {currentUser ? currentUser.email : 'Anonymous'}</h2>
       <hr className="mt-2 mb-3"/>
 
       <h2 className="text-center my-4">Add a new note</h2>
